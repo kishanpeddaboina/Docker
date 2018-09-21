@@ -24,7 +24,7 @@ stage('Remove Old Containers'){
     sshagent(['dev-staging']) {
       try{
         def sshCmd = 'ssh -o StrictHostKeyChecking=no ubuntu@54.191.73.116'
-        def dockerRM = 'docker rm -f my-app'
+        def dockerRM = 'docker rm -f my-kishan'
         sh "${sshCmd} ${dockerRM}"
       }catch(error){
 
