@@ -1,0 +1,34 @@
+node{
+    stage('Scm Checkout'){
+    git credentialsId: 'git', url: 'https://github.com/kishanpeddaboina/Docker'
+}
+    stage('Mvn Package'){
+    def mvnHome = tool name: 'maven', type: 'maven'
+def mvnCMD = "${mvnHome}/bin/mvn"
+    sh "${mvnCMD} clean package"
+
+
+}
+
+     stage('Build Docker'){
+     sh 'docker build -t kishanpeddaboina/my-app:2.0.0 .'
+}
+stage('Push Docker Image'){
+withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubpasswd')]) {
+ 
+sh "docker login -u kishanpeddaboina -p ${dockerhubpasswd}"
+}
+sh 'docker push kishanpeddaboina/my-app:2.0.0'
+
+
+}
+
+stage('Runcontainer on dev server'){
+
+dev dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:2.0.0'
+sshagent(['aws-ec2']) {
+sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.191.73.116 ${dockerRun}'
+}
+
+}
+}

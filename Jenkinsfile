@@ -19,6 +19,19 @@ def mvnCMD = "${mvnHome}/bin/mvn"
   
 
 }
+
+stage('Remove Old Containers'){
+    sshagent(['dev-staging']) {
+      try{
+        def sshCmd = 'ssh -o StrictHostKeyChecking=no ubuntu@54.191.73.116'
+        def dockerRM = 'docker rm -f my-app'
+        sh "${sshCmd} ${dockerRM}"
+      }catch(error){
+
+      }
+    }
+  }
+
    stage('Runcontainer on dev server'){
 
   def dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:2.0.0'
