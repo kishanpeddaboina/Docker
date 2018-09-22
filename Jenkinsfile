@@ -15,7 +15,7 @@ def mvnCMD = "${mvnHome}/bin/mvn"
  
      sh "docker login -u kishanpeddaboina -p ${dockerhubpasswd}"
 }
-     sh 'docker push kishanpeddaboina/my-app:2.0.0'
+        sh 'docker push kishanpeddaboina/my-app:${BUILD_NUMBER}'
   
 
 }
@@ -27,14 +27,13 @@ stage('Remove Old Containers'){
         def dockerRM = 'docker rm -f my-kishan'
         sh "${sshCmd} ${dockerRM}"
       }catch(error){
-
       }
     }
   }
 
    stage('Runcontainer on dev server'){
 
-  def dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:2.0.0'
+       def dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:${BUILD_NUMBER}'
   sshagent(['dev-staging']) {
  sh "ssh -o StrictHostKeyChecking=no ubuntu@54.191.73.116 ${dockerRun}"
 }
