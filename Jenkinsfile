@@ -27,7 +27,6 @@ stage('Remove Old Containers'){
         def dockerRM = 'docker rm -f my-kishan'
         sh "${sshCmd} ${dockerRM}"
       }catch(error){
-
       }
     }
   }
