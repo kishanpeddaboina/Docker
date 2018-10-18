@@ -34,7 +34,7 @@ stage('Remove Old Containers'){
    stage('Runcontainer on dev server'){
 
   def dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:${BUILD_NUMBER}'
-  sshagent(['dev-staging']) {
+  sshagent(['ec2']) {
  sh "ssh -o StrictHostKeyChecking=no ubuntu@52.34.244.220 ${dockerRun}"
 }
 
