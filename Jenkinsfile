@@ -20,9 +20,9 @@ def mvnCMD = "${mvnHome}/bin/mvn"
 }
 
 stage('Remove Old Containers'){
-    sshagent(['dev-staging']) {
+    sshagent(['ec2']) {
       try{
-        def sshCmd = 'ssh -o StrictHostKeyChecking=no ubuntu@52.34.244.220'
+        def sshCmd = 'ssh -o StrictHostKeyChecking=no ubuntu@65.1.134.199'
         def dockerRM = 'docker rm -f my-kishan'
         sh "${sshCmd} ${dockerRM}"
       }catch(error){
@@ -35,7 +35,7 @@ stage('Remove Old Containers'){
 
   def dockerRun = 'docker run -p 8080:8080 -d --name my-kishan kishanpeddaboina/my-app:${BUILD_NUMBER}'
   sshagent(['ec2']) {
- sh "ssh -o StrictHostKeyChecking=no ubuntu@52.34.244.220 ${dockerRun}"
+ sh "ssh -o StrictHostKeyChecking=no ubuntu@65.1.134.199 ${dockerRun}"
 }
 
 }
