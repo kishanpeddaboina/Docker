@@ -49,7 +49,8 @@ def mvnCMD = "${mvnHome}/bin/mvn"
                sh "ssh ubuntu@65.1.134.199 kubectl create -f ."
                }
                }
-
+        }
+    }
 
 }
 
